@@ -1,5 +1,6 @@
 import { Noto_Sans_JP } from "next/font/google";
 
+import { SessionProvider } from "@/components/providers/session-provider";
 import { Toaster } from "@/components/ui/sonner";
 
 import type { Metadata } from "next";
@@ -26,8 +27,10 @@ export default function RootLayout({
       <body
         className={`${notoSansJP.variable} min-h-screen bg-background font-sans antialiased`}
       >
-        {children}
-        <Toaster richColors position="top-right" />
+        <SessionProvider>
+          {children}
+          <Toaster richColors position="top-right" />
+        </SessionProvider>
       </body>
     </html>
   );
