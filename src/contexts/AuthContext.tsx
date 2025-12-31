@@ -1,6 +1,12 @@
 "use client";
 
-import { createContext, useContext, useState, useCallback, useMemo } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useCallback,
+  useMemo,
+} from "react";
 
 import type { User, UserRole } from "@/types/auth";
 
@@ -28,7 +34,10 @@ interface AuthProviderProps {
 }
 
 // TODO: 認証機能実装時に実際のAPI呼び出しに置き換える
-export function AuthProvider({ children, initialUser = null }: AuthProviderProps) {
+export function AuthProvider({
+  children,
+  initialUser = null,
+}: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(initialUser);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -42,8 +51,8 @@ export function AuthProvider({ children, initialUser = null }: AuthProviderProps
       const mockRole: UserRole = email.includes("admin")
         ? "admin"
         : email.includes("manager")
-        ? "manager"
-        : "member";
+          ? "manager"
+          : "member";
 
       const mockUser: User = {
         id: 1,

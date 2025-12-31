@@ -72,8 +72,12 @@ describe("canPerformAction", () => {
 
     it("should only allow manager and admin to view subordinates reports", () => {
       expect(canPerformAction("report:view-subordinates", "admin")).toBe(true);
-      expect(canPerformAction("report:view-subordinates", "manager")).toBe(true);
-      expect(canPerformAction("report:view-subordinates", "member")).toBe(false);
+      expect(canPerformAction("report:view-subordinates", "manager")).toBe(
+        true
+      );
+      expect(canPerformAction("report:view-subordinates", "member")).toBe(
+        false
+      );
     });
   });
 

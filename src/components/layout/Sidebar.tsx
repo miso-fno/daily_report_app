@@ -25,7 +25,12 @@ const navItems: NavItem[] = [
   { id: "dashboard", label: "ダッシュボード", href: "/dashboard", icon: Home },
   { id: "reports", label: "日報一覧", href: "/reports", icon: FileText },
   { id: "customers", label: "顧客マスタ", href: "/customers", icon: Building2 },
-  { id: "sales-persons", label: "営業マスタ", href: "/sales-persons", icon: Users },
+  {
+    id: "sales-persons",
+    label: "営業マスタ",
+    href: "/sales-persons",
+    icon: Users,
+  },
 ];
 
 interface SidebarProps {

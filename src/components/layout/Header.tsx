@@ -35,7 +35,12 @@ interface NavItem {
 const navItems: NavItem[] = [
   { id: "reports", label: "日報一覧", href: "/reports", icon: FileText },
   { id: "customers", label: "顧客マスタ", href: "/customers", icon: Building2 },
-  { id: "sales-persons", label: "営業マスタ", href: "/sales-persons", icon: Users },
+  {
+    id: "sales-persons",
+    label: "営業マスタ",
+    href: "/sales-persons",
+    icon: Users,
+  },
 ];
 
 interface HeaderProps {
@@ -127,7 +132,9 @@ export function Header({ onMenuClick }: HeaderProps) {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
                 <div className="flex flex-col space-y-1 p-2">
-                  <p className="text-sm font-medium leading-none">{user.name}</p>
+                  <p className="text-sm font-medium leading-none">
+                    {user.name}
+                  </p>
                   <p className="text-xs leading-none text-muted-foreground">
                     {user.email}
                   </p>

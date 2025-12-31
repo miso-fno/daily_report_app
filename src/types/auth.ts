@@ -12,10 +12,7 @@ export interface User {
 }
 
 /** 権限に基づくメニュー表示判定 */
-export function canAccessMenu(
-  menuId: string,
-  role: UserRole
-): boolean {
+export function canAccessMenu(menuId: string, role: UserRole): boolean {
   const menuPermissions: Record<string, UserRole[]> = {
     dashboard: ["member", "manager", "admin"],
     reports: ["member", "manager", "admin"],
@@ -24,16 +21,15 @@ export function canAccessMenu(
   };
 
   const allowedRoles = menuPermissions[menuId];
-  if (!allowedRoles) {return false;}
+  if (!allowedRoles) {
+    return false;
+  }
 
   return allowedRoles.includes(role);
 }
 
 /** 権限に基づく操作判定 */
-export function canPerformAction(
-  action: string,
-  role: UserRole
-): boolean {
+export function canPerformAction(action: string, role: UserRole): boolean {
   const actionPermissions: Record<string, UserRole[]> = {
     "report:create": ["member", "manager", "admin"],
     "report:edit-own": ["member", "manager", "admin"],
@@ -46,7 +42,9 @@ export function canPerformAction(
   };
 
   const allowedRoles = actionPermissions[action];
-  if (!allowedRoles) {return false;}
+  if (!allowedRoles) {
+    return false;
+  }
 
   return allowedRoles.includes(role);
 }
