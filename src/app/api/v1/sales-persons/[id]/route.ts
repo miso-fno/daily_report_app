@@ -270,4 +270,6 @@ const handlers = createHandlers<{ id: string }>({
   },
 });
 
-export const { GET, PUT, DELETE } = handlers;
+export const GET = handlers.GET!;
+export const PUT = handlers.PUT!;
+export const DELETE = handlers.DELETE!;
