@@ -1,9 +1,21 @@
 import { PrismaClient, ReportStatus } from "@prisma/client";
+import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
+// テスト用の共通パスワード（開発環境用）
+const DEFAULT_PASSWORD = "password123";
+
+async function hashPassword(password: string): Promise<string> {
+  return bcrypt.hash(password, 10);
+}
+
 async function main() {
   console.log("Start seeding...");
+
+  // 共通パスワードをハッシュ化
+  const hashedPassword = await hashPassword(DEFAULT_PASSWORD);
+  console.log(`Using default password: ${DEFAULT_PASSWORD}`);
 
   // 営業担当者データの作成
   // 1. 管理者（上長なし）
@@ -11,7 +23,7 @@ async function main() {
     data: {
       name: "山田 太郎",
       email: "yamada@example.com",
-      password: "hashed_password_admin", // 本番環境では適切にハッシュ化
+      password: hashedPassword,
       department: "営業部",
       isManager: true,
     },
@@ -23,7 +35,7 @@ async function main() {
     data: {
       name: "鈴木 一郎",
       email: "suzuki@example.com",
-      password: "hashed_password_manager1",
+      password: hashedPassword,
       department: "営業部 第一課",
       isManager: true,
       managerId: admin.id,
@@ -35,7 +47,7 @@ async function main() {
     data: {
       name: "佐藤 花子",
       email: "sato@example.com",
-      password: "hashed_password_manager2",
+      password: hashedPassword,
       department: "営業部 第二課",
       isManager: true,
       managerId: admin.id,
@@ -48,7 +60,7 @@ async function main() {
     data: {
       name: "田中 次郎",
       email: "tanaka@example.com",
-      password: "hashed_password_member1",
+      password: hashedPassword,
       department: "営業部 第一課",
       isManager: false,
       managerId: manager1.id,
@@ -60,7 +72,7 @@ async function main() {
     data: {
       name: "高橋 三郎",
       email: "takahashi@example.com",
-      password: "hashed_password_member2",
+      password: hashedPassword,
       department: "営業部 第一課",
       isManager: false,
       managerId: manager1.id,
@@ -72,7 +84,7 @@ async function main() {
     data: {
       name: "伊藤 美咲",
       email: "ito@example.com",
-      password: "hashed_password_member3",
+      password: hashedPassword,
       department: "営業部 第二課",
       isManager: false,
       managerId: manager2.id,
