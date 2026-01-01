@@ -1,14 +1,19 @@
 /**
- * 日報一覧API関数
+ * 日報API関数
  */
 
 import { REPORTS_API_BASE } from "./constants";
 
 import type {
   ApiErrorResponse,
+  CreateReportRequest,
+  CreateReportResponse,
+  CustomersOptionsResponse,
+  ReportDetailResponse,
   ReportsListResponse,
   ReportsSearchParams,
   SalesPersonsOptionsResponse,
+  UpdateReportResponse,
 } from "./types";
 
 /**
@@ -95,4 +100,89 @@ export async function fetchSelectableSalesPersons(): Promise<SalesPersonsOptions
       ),
     },
   };
+}
+
+/**
+ * 日報詳細を取得
+ */
+export async function fetchReportById(
+  reportId: number
+): Promise<ReportDetailResponse> {
+  const response = await fetch(`${REPORTS_API_BASE}/${reportId}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    const errorData = (await response.json()) as ApiErrorResponse;
+    throw new Error(errorData.error?.message || "日報の取得に失敗しました");
+  }
+
+  return response.json();
+}
+
+/**
+ * 日報を作成
+ */
+export async function createReport(
+  data: CreateReportRequest
+): Promise<CreateReportResponse> {
+  const response = await fetch(REPORTS_API_BASE, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    const errorData = (await response.json()) as ApiErrorResponse;
+    throw new Error(errorData.error?.message || "日報の作成に失敗しました");
+  }
+
+  return response.json();
+}
+
+/**
+ * 日報を更新
+ */
+export async function updateReport(
+  reportId: number,
+  data: CreateReportRequest
+): Promise<UpdateReportResponse> {
+  const response = await fetch(`${REPORTS_API_BASE}/${reportId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    const errorData = (await response.json()) as ApiErrorResponse;
+    throw new Error(errorData.error?.message || "日報の更新に失敗しました");
+  }
+
+  return response.json();
+}
+
+/**
+ * 顧客一覧を取得（選択肢用）
+ */
+export async function fetchCustomersForSelect(): Promise<CustomersOptionsResponse> {
+  const response = await fetch("/api/v1/customers?per_page=100", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    const errorData = (await response.json()) as ApiErrorResponse;
+    throw new Error(errorData.error?.message || "顧客一覧の取得に失敗しました");
+  }
+
+  return response.json();
 }
