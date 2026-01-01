@@ -28,7 +28,7 @@ function getToday(): string {
 
 function getTomorrow(): string {
   const date = new Date();
-  date.setDate(date.getDate() + 1);
+  date.setDate(date.getDate() + 2); // タイムゾーンの問題を回避するため2日後を使用
   return date.toISOString().split("T")[0] as string;
 }
 
