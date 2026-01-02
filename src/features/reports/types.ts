@@ -209,3 +209,41 @@ export interface CustomersOptionsResponse {
   };
   message?: string;
 }
+
+/**
+ * ステータス更新APIレスポンス
+ */
+export interface UpdateStatusResponse {
+  success: boolean;
+  data: {
+    report_id: number;
+    status: ReportStatusType;
+    status_label: string;
+    updated_at: string;
+  };
+  message?: string;
+}
+
+/**
+ * コメント作成APIレスポンス
+ */
+export interface CreateCommentResponse {
+  success: boolean;
+  data: {
+    comment_id: number;
+    report_id: number;
+    created_at: string;
+  };
+  message?: string;
+}
+
+/**
+ * コメント削除APIレスポンス
+ */
+export interface DeleteCommentResponse {
+  success: boolean;
+  data: {
+    comment_id: number;
+  };
+  message?: string;
+}

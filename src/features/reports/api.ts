@@ -6,14 +6,17 @@ import { REPORTS_API_BASE } from "./constants";
 
 import type {
   ApiErrorResponse,
+  CreateCommentResponse,
   CreateReportRequest,
   CreateReportResponse,
   CustomersOptionsResponse,
+  DeleteCommentResponse,
   ReportDetailResponse,
   ReportsListResponse,
   ReportsSearchParams,
   SalesPersonsOptionsResponse,
   UpdateReportResponse,
+  UpdateStatusResponse,
 } from "./types";
 
 /**
@@ -182,6 +185,75 @@ export async function fetchCustomersForSelect(): Promise<CustomersOptionsRespons
   if (!response.ok) {
     const errorData = (await response.json()) as ApiErrorResponse;
     throw new Error(errorData.error?.message || "顧客一覧の取得に失敗しました");
+  }
+
+  return response.json();
+}
+
+/**
+ * 日報のステータスを更新
+ */
+export async function updateReportStatus(
+  reportId: number,
+  status: "draft" | "submitted" | "confirmed"
+): Promise<UpdateStatusResponse> {
+  const response = await fetch(`${REPORTS_API_BASE}/${reportId}/status`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ status }),
+  });
+
+  if (!response.ok) {
+    const errorData = (await response.json()) as ApiErrorResponse;
+    throw new Error(
+      errorData.error?.message || "ステータスの更新に失敗しました"
+    );
+  }
+
+  return response.json();
+}
+
+/**
+ * コメントを作成
+ */
+export async function createComment(
+  reportId: number,
+  commentText: string
+): Promise<CreateCommentResponse> {
+  const response = await fetch(`${REPORTS_API_BASE}/${reportId}/comments`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ comment_text: commentText }),
+  });
+
+  if (!response.ok) {
+    const errorData = (await response.json()) as ApiErrorResponse;
+    throw new Error(errorData.error?.message || "コメントの投稿に失敗しました");
+  }
+
+  return response.json();
+}
+
+/**
+ * コメントを削除
+ */
+export async function deleteComment(
+  commentId: number
+): Promise<DeleteCommentResponse> {
+  const response = await fetch(`/api/v1/comments/${commentId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    const errorData = (await response.json()) as ApiErrorResponse;
+    throw new Error(errorData.error?.message || "コメントの削除に失敗しました");
   }
 
   return response.json();
