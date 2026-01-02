@@ -155,6 +155,7 @@ export function SalesPersonsList() {
           currentPage={pagination.current_page}
           lastPage={pagination.last_page}
           total={pagination.total}
+          perPage={pagination.per_page}
           onPageChange={handlePageChange}
         />
       )}
