@@ -44,3 +44,11 @@ global.ResizeObserver = vi.fn().mockImplementation(() => ({
   unobserve: vi.fn(),
   disconnect: vi.fn(),
 }));
+
+// PointerCapture APIモック（Radix UI Select用）
+Element.prototype.hasPointerCapture = vi.fn().mockReturnValue(false);
+Element.prototype.setPointerCapture = vi.fn();
+Element.prototype.releasePointerCapture = vi.fn();
+
+// scrollIntoView モック
+Element.prototype.scrollIntoView = vi.fn();
