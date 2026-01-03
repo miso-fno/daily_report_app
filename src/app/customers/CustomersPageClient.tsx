@@ -34,7 +34,7 @@ interface CustomerListResponse {
 
 const DEFAULT_PER_PAGE = 20;
 
-export default function CustomersPageClient() {
+function CustomersPageContent() {
   const { user } = useAuth();
   const canEdit = user ? canPerformAction("customer:edit", user.role) : false;
 
@@ -123,53 +123,59 @@ export default function CustomersPageClient() {
   );
 
   return (
-    <AuthenticatedLayout>
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold">顧客マスタ</h1>
-          {canEdit && (
-            <Button asChild>
-              <Link href="/customers/new">
-                <Plus className="h-4 w-4 mr-2" />
-                新規登録
-              </Link>
-            </Button>
-          )}
-        </div>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">検索条件</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <CustomerSearchForm
-              values={searchValues}
-              onChange={setSearchValues}
-              onSearch={handleSearch}
-              onClear={handleClear}
-              isLoading={isLoading}
-            />
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">顧客一覧</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <CustomerTable
-              customers={customers}
-              pagination={pagination}
-              sort={sort}
-              order={order}
-              onPageChange={handlePageChange}
-              onSortChange={handleSortChange}
-              isLoading={isLoading}
-              canEdit={canEdit}
-            />
-          </CardContent>
-        </Card>
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold">顧客マスタ</h1>
+        {canEdit && (
+          <Button asChild>
+            <Link href="/customers/new">
+              <Plus className="h-4 w-4 mr-2" />
+              新規登録
+            </Link>
+          </Button>
+        )}
       </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg">検索条件</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <CustomerSearchForm
+            values={searchValues}
+            onChange={setSearchValues}
+            onSearch={handleSearch}
+            onClear={handleClear}
+            isLoading={isLoading}
+          />
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg">顧客一覧</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <CustomerTable
+            customers={customers}
+            pagination={pagination}
+            sort={sort}
+            order={order}
+            onPageChange={handlePageChange}
+            onSortChange={handleSortChange}
+            isLoading={isLoading}
+            canEdit={canEdit}
+          />
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+export default function CustomersPageClient() {
+  return (
+    <AuthenticatedLayout>
+      <CustomersPageContent />
     </AuthenticatedLayout>
   );
 }

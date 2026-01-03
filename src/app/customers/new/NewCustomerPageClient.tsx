@@ -21,7 +21,7 @@ interface ApiResponse {
   };
 }
 
-export default function NewCustomerPageClient() {
+function NewCustomerPageContent() {
   const router = useRouter();
   const { user } = useAuth();
   const canEdit = user ? canPerformAction("customer:edit", user.role) : false;
@@ -85,33 +85,37 @@ export default function NewCustomerPageClient() {
   // Don't render form if not authorized
   if (!canEdit) {
     return (
-      <AuthenticatedLayout>
-        <div className="flex items-center justify-center h-64">
-          <p className="text-muted-foreground">読み込み中...</p>
-        </div>
-      </AuthenticatedLayout>
+      <div className="flex items-center justify-center h-64">
+        <p className="text-muted-foreground">読み込み中...</p>
+      </div>
     );
   }
 
   return (
-    <AuthenticatedLayout>
-      <div className="max-w-2xl mx-auto space-y-6">
-        <h1 className="text-2xl font-bold">顧客登録</h1>
+    <div className="max-w-2xl mx-auto space-y-6">
+      <h1 className="text-2xl font-bold">顧客登録</h1>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">顧客情報</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <CustomerForm
-              mode="create"
-              onSubmit={handleSubmit}
-              isSubmitting={isSubmitting}
-              error={error}
-            />
-          </CardContent>
-        </Card>
-      </div>
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg">顧客情報</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <CustomerForm
+            mode="create"
+            onSubmit={handleSubmit}
+            isSubmitting={isSubmitting}
+            error={error}
+          />
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+export default function NewCustomerPageClient() {
+  return (
+    <AuthenticatedLayout>
+      <NewCustomerPageContent />
     </AuthenticatedLayout>
   );
 }

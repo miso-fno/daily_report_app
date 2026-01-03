@@ -71,7 +71,7 @@ function FormSkeleton() {
   );
 }
 
-export default function CustomerEditPageClient() {
+function CustomerEditPageContent() {
   const router = useRouter();
   const params = useParams();
   const customerId = params.id as string;
@@ -208,16 +208,14 @@ export default function CustomerEditPageClient() {
   // Don't render form if not authorized
   if (!canEdit) {
     return (
-      <AuthenticatedLayout>
-        <div className="flex items-center justify-center h-64">
-          <p className="text-muted-foreground">読み込み中...</p>
-        </div>
-      </AuthenticatedLayout>
+      <div className="flex items-center justify-center h-64">
+        <p className="text-muted-foreground">読み込み中...</p>
+      </div>
     );
   }
 
   return (
-    <AuthenticatedLayout>
+    <>
       <div className="max-w-2xl mx-auto space-y-6">
         <h1 className="text-2xl font-bold">顧客編集</h1>
 
@@ -250,6 +248,14 @@ export default function CustomerEditPageClient() {
         onConfirm={handleDeleteConfirm}
         isDeleting={isDeleting}
       />
+    </>
+  );
+}
+
+export default function CustomerEditPageClient() {
+  return (
+    <AuthenticatedLayout>
+      <CustomerEditPageContent />
     </AuthenticatedLayout>
   );
 }

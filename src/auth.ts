@@ -74,12 +74,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return {
         ...session,
         user: {
-          id: token.id as number,
+          id: Number(token.id),
           email: token.email as string,
           name: token.name as string,
           department: token.department as string,
           isManager: token.isManager as boolean,
-          managerId: token.managerId as number | null,
+          managerId: token.managerId ? Number(token.managerId) : null,
         },
       };
     },
