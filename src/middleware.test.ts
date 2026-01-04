@@ -64,7 +64,6 @@ describe("認証ミドルウェア", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    mockSession = null;
   });
 
   describe("パブリックルートへのアクセス", () => {
