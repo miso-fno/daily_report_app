@@ -1,0 +1,2 @@
+# This directory stores authentication state files
+# The actual auth state files (*.json) are gitignored
