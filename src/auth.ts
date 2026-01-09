@@ -10,6 +10,17 @@ const signInSchema = z.object({
   password: z.string().min(1, "パスワードを入力してください"),
 });
 
+/**
+ * セッション有効期限: 8時間（業務アプリケーション向け）
+ * 業務時間内でのセッション継続を想定
+ */
+const SESSION_MAX_AGE = 8 * 60 * 60; // 8 hours in seconds
+
+/**
+ * 本番環境かどうかを判定
+ */
+const isProduction = process.env.NODE_ENV === "production";
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     Credentials({
@@ -52,7 +63,44 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   ],
   session: {
     strategy: "jwt",
-    maxAge: 30 * 24 * 60 * 60, // 30 days
+    maxAge: SESSION_MAX_AGE,
+    // セッションの更新間隔（1時間ごとにセッションを更新）
+    updateAge: 60 * 60, // 1 hour
+  },
+  // セキュアなCookie設定
+  cookies: {
+    sessionToken: {
+      name: isProduction
+        ? "__Secure-authjs.session-token"
+        : "authjs.session-token",
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: isProduction,
+        maxAge: SESSION_MAX_AGE,
+      },
+    },
+    callbackUrl: {
+      name: isProduction
+        ? "__Secure-authjs.callback-url"
+        : "authjs.callback-url",
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: isProduction,
+      },
+    },
+    csrfToken: {
+      name: isProduction ? "__Host-authjs.csrf-token" : "authjs.csrf-token",
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: isProduction,
+      },
+    },
   },
   pages: {
     signIn: "/login",
@@ -84,4 +132,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       };
     },
   },
+  // トラストホスト設定（プロキシ経由のアクセスを許可）
+  trustHost: true,
 });
