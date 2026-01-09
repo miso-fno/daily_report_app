@@ -407,7 +407,10 @@ describe("LoginForm", () => {
       // 成功するログインをセットアップ
       mockLogin.mockResolvedValue(undefined);
 
-      // パスワードをクリアして再入力
+      // フィールドがenabledになるのを待ってからクリアして再入力
+      await waitFor(() => {
+        expect(passwordInput).toBeEnabled();
+      });
       await user.clear(passwordInput);
       await user.type(passwordInput, "correctpassword");
       await user.click(submitButton);
