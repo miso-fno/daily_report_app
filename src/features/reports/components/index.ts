@@ -4,6 +4,7 @@ export { ReportBasicInfo } from "./ReportBasicInfo";
 export { ReportDetailView } from "./ReportDetail";
 export { ReportForm } from "./ReportForm";
 export { ReportFormSkeleton } from "./ReportFormSkeleton";
+export { ReportFormWrapper } from "./ReportFormWrapper";
 export { ReportsList } from "./ReportsList";
 export { ReportsListSkeleton } from "./ReportsListSkeleton";
 export { ReportsSearchForm } from "./ReportsSearchForm";

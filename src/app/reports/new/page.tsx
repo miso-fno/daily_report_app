@@ -1,22 +1,9 @@
 import { ChevronLeft } from "lucide-react";
-import nextDynamic from "next/dynamic";
 import Link from "next/link";
 
 import { AuthenticatedLayout } from "@/components/layout/AuthenticatedLayout";
 import { Button } from "@/components/ui/button";
-import { ReportFormSkeleton } from "@/features/reports/components";
-
-// ReportFormを遅延読み込み（フォームは重いコンポーネント）
-const ReportForm = nextDynamic(
-  () =>
-    import("@/features/reports/components/ReportForm").then(
-      (mod) => mod.ReportForm
-    ),
-  {
-    loading: () => <ReportFormSkeleton />,
-    ssr: false, // クライアントサイドでのみレンダリング
-  }
-);
+import { ReportFormWrapper } from "@/features/reports/components";
 
 export const metadata = {
   title: "日報作成 | 営業日報システム",
@@ -39,7 +26,7 @@ export default function NewReportPage() {
           </Button>
         </div>
         <h1 className="text-2xl font-bold">日報作成</h1>
-        <ReportForm />
+        <ReportFormWrapper />
       </div>
     </AuthenticatedLayout>
   );
