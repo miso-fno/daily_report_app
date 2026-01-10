@@ -55,8 +55,8 @@ jobs:
       - name: Generate Prisma Client
         run: npx prisma generate
 
-      - name: Run database migrations
-        run: npx prisma migrate deploy
+      - name: Setup database schema
+        run: npx prisma db push --skip-generate
 
       - name: Seed database
         run: npx prisma db seed
@@ -126,8 +126,8 @@ jobs:
       - name: Generate Prisma Client
         run: npx prisma generate
 
-      - name: Run database migrations
-        run: npx prisma migrate deploy
+      - name: Setup database schema
+        run: npx prisma db push --skip-generate
 
       - name: Seed database
         run: npx prisma db seed
