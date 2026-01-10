@@ -12,7 +12,8 @@ test.describe("UAT-001: 営業担当者の業務フロー", () => {
     page,
   }) => {
     // Step 1: ログイン
-    await page.goto("/login", { waitUntil: "networkidle" });
+    await page.goto("/login");
+    await expect(page.getByText("営業日報システム")).toBeVisible();
     await page.getByLabel("メールアドレス").fill(TEST_SALES_MEMBER.email);
     await page.getByLabel("パスワード").fill(TEST_SALES_MEMBER.password);
     await page.getByRole("button", { name: "ログイン" }).click();

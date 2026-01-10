@@ -10,7 +10,8 @@ import { TEST_MANAGER } from "../utils/test-data";
 test.describe("UAT-002: 上長の業務フロー", () => {
   test("上長がログインして日報一覧にアクセスできる", async ({ page }) => {
     // Step 1: ログイン
-    await page.goto("/login", { waitUntil: "networkidle" });
+    await page.goto("/login");
+    await expect(page.getByText("営業日報システム")).toBeVisible();
     await page.getByLabel("メールアドレス").fill(TEST_MANAGER.email);
     await page.getByLabel("パスワード").fill(TEST_MANAGER.password);
     await page.getByRole("button", { name: "ログイン" }).click();

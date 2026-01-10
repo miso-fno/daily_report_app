@@ -8,8 +8,11 @@ import { TEST_SALES_MEMBER, INVALID_CREDENTIALS } from "../utils/test-data";
  */
 test.describe("認証機能", () => {
   test.beforeEach(async ({ page }) => {
-    // ログインページに移動し、ページが完全にロードされるまで待機
-    await page.goto("/login", { waitUntil: "networkidle" });
+    // ログインページに移動
+    await page.goto("/login");
+
+    // ページが完全にロードされるまで待機（Suspense境界のハイドレーション完了を待つ）
+    await expect(page.getByText("営業日報システム")).toBeVisible();
   });
 
   test("ログインページが正しく表示される", async ({ page }) => {
