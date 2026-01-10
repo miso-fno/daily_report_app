@@ -38,9 +38,13 @@ export default auth((req) => {
   const { pathname } = req.nextUrl;
   const session = req.auth;
 
+  // CI/テスト環境ではレート制限をスキップ
+  const isTestEnv =
+    process.env.CI === "true" || process.env.NODE_ENV === "test";
+
   // レート制限のチェック
   const rateLimitConfig = getRateLimitConfig(pathname);
-  if (rateLimitConfig) {
+  if (rateLimitConfig && !isTestEnv) {
     const { result, headers } = checkRateLimit(
       req,
       rateLimitConfig.name,
