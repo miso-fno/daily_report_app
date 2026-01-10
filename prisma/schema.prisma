@@ -39,6 +39,11 @@ model SalesPerson {
   // コメントリレーション
   comments Comment[]
 
+  // パフォーマンス最適化: 頻繁に検索されるカラムにインデックス
+  @@index([managerId]) // 部下の取得時に使用
+  @@index([department]) // 部署でのフィルタリング
+  @@index([isManager]) // 上長の一覧取得
+  @@index([createdAt]) // 作成日時でのソート
   @@map("sales_persons")
 }
 
@@ -55,6 +60,9 @@ model Customer {
   // 訪問記録リレーション
   visitRecords VisitRecord[]
 
+  // パフォーマンス最適化: 顧客名検索の高速化
+  @@index([customerName]) // 顧客名での検索・ソート
+  @@index([createdAt]) // 作成日時でのソート
   @@map("customers")
 }
 
@@ -80,6 +88,13 @@ model DailyReport {
 
   // 同一営業担当者の同一日付の日報は1件のみ
   @@unique([salesPersonId, reportDate])
+  // パフォーマンス最適化: 日報検索・一覧表示の高速化
+  @@index([salesPersonId]) // 営業担当者別の日報取得
+  @@index([reportDate]) // 日付範囲での検索
+  @@index([status]) // ステータスでのフィルタリング
+  @@index([createdAt]) // 作成日時でのソート
+  @@index([salesPersonId, status]) // 営業担当者とステータスの複合検索
+  @@index([reportDate, status]) // 日付とステータスの複合検索
   @@map("daily_reports")
 }
 
@@ -101,6 +116,10 @@ model VisitRecord {
   // 顧客リレーション
   customer Customer @relation(fields: [customerId], references: [id], onDelete: Restrict)
 
+  // パフォーマンス最適化: 訪問記録の検索高速化
+  @@index([reportId]) // 日報別の訪問記録取得（N+1対策）
+  @@index([customerId]) // 顧客別の訪問履歴取得
+  @@index([createdAt]) // 作成日時でのソート
   @@map("visit_records")
 }
 
@@ -119,5 +138,9 @@ model Comment {
   // コメント投稿者（営業担当者）リレーション
   salesPerson SalesPerson @relation(fields: [salesPersonId], references: [id], onDelete: Cascade)
 
+  // パフォーマンス最適化: コメント検索の高速化
+  @@index([reportId]) // 日報別のコメント取得（N+1対策）
+  @@index([salesPersonId]) // コメント投稿者別の取得
+  @@index([createdAt]) // 作成日時でのソート（新着順表示）
   @@map("comments")
 }

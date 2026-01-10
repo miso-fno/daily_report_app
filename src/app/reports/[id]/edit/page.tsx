@@ -6,7 +6,7 @@ import { auth } from "@/auth";
 import { AuthenticatedLayout } from "@/components/layout/AuthenticatedLayout";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { ReportForm } from "@/features/reports/components";
+import { ReportFormWrapper } from "@/features/reports/components";
 import { prisma } from "@/lib/prisma";
 
 import type {
@@ -180,7 +180,7 @@ export default async function EditReportPage({ params }: EditReportPageProps) {
           </Button>
         </div>
         <h1 className="text-2xl font-bold">日報編集</h1>
-        <ReportForm report={report} isEdit />
+        <ReportFormWrapper report={report} isEdit />
       </div>
     </AuthenticatedLayout>
   );

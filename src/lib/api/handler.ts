@@ -2,6 +2,7 @@
  * APIルートハンドラーラッパー
  *
  * 統一されたエラーハンドリングと認証チェックを提供します
+ * パフォーマンス計測機能を含む
  */
 
 import { ZodError } from "zod";
@@ -13,6 +14,11 @@ import {
   validationErrorResponse,
 } from "./response";
 import { zodErrorToDetails } from "./validation";
+import {
+  endMeasurement,
+  PerformanceThresholds,
+  startMeasurement,
+} from "../performance";
 
 import type { ErrorDetail, ErrorResponse } from "./response";
 import type { NextRequest, NextResponse } from "next/server";
@@ -38,6 +44,10 @@ export type RouteHandler<TParams = Record<string, string | string[]>> = (
 export interface HandlerOptions {
   /** エラーをコンソールに出力するかどうか (デフォルト: true in development) */
   logErrors?: boolean;
+  /** パフォーマンス計測を有効にするかどうか (デフォルト: true in development) */
+  measurePerformance?: boolean;
+  /** 操作名（パフォーマンスログ用） */
+  operationName?: string;
 }
 
 /**
@@ -123,9 +133,38 @@ export function withHandler<TParams = Record<string, string | string[]>>(
   options?: HandlerOptions
 ): RouteHandler<TParams> {
   return async (request: NextRequest, context: RouteContext<TParams>) => {
+    // パフォーマンス計測の設定
+    const shouldMeasure =
+      options?.measurePerformance ?? process.env.NODE_ENV === "development";
+
+    // 安全にパス名を取得（テスト環境でnextUrlがない場合に対応）
+    const pathname = request.nextUrl?.pathname ?? request.url ?? "unknown";
+    const operationName =
+      options?.operationName ?? `${request.method} ${pathname}`;
+
+    // 計測開始
+    const metrics = shouldMeasure
+      ? startMeasurement(operationName, {
+          method: request.method,
+          path: pathname,
+        })
+      : null;
+
     try {
-      return await handler(request, context);
+      const response = await handler(request, context);
+
+      // 計測終了（成功）
+      if (metrics) {
+        endMeasurement(metrics, PerformanceThresholds.API_WARNING);
+      }
+
+      return response;
     } catch (error) {
+      // 計測終了（エラー）
+      if (metrics) {
+        endMeasurement(metrics, PerformanceThresholds.API_WARNING);
+      }
+
       return handleError(error, options);
     }
   };
