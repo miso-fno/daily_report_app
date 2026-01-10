@@ -111,8 +111,8 @@ export default defineConfig({
 
   // Webサーバーの設定
   webServer: {
-    // CI環境ではビルド済みアプリを使用、ローカルでは開発サーバー
-    command: process.env.CI ? "npm run start" : "npm run dev",
+    // CI環境ではstandaloneサーバーを使用、ローカルでは開発サーバー
+    command: process.env.CI ? "node .next/standalone/server.js" : "npm run dev",
     url: "http://localhost:3000",
     reuseExistingServer: !process.env.CI,
     timeout: 120000,
