@@ -64,6 +64,11 @@ jobs:
       - name: Build application
         run: npm run build
 
+      - name: Prepare standalone build
+        run: |
+          cp -r public .next/standalone/public
+          cp -r .next/static .next/standalone/.next/static
+
       - name: Run E2E tests
         run: npm run test:e2e
         env:
@@ -134,6 +139,11 @@ jobs:
 
       - name: Build application
         run: npm run build
+
+      - name: Prepare standalone build
+        run: |
+          cp -r public .next/standalone/public
+          cp -r .next/static .next/standalone/.next/static
 
       - name: Run E2E tests (Chromium only)
         run: npm run test:e2e:chromium
