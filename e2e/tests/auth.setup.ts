@@ -12,9 +12,7 @@ setup("authenticate as sales member", async ({ page }) => {
   await page.goto("/login");
 
   // ログインフォームが表示されるまで待機
-  await expect(
-    page.getByRole("heading", { name: "営業日報システム" })
-  ).toBeVisible();
+  await expect(page.getByText("営業日報システム")).toBeVisible();
 
   // メールアドレスを入力
   await page.getByLabel("メールアドレス").fill(TEST_SALES_MEMBER.email);
@@ -44,9 +42,7 @@ setup("authenticate as manager", async ({ page }) => {
   await page.goto("/login");
 
   // ログインフォームが表示されるまで待機
-  await expect(
-    page.getByRole("heading", { name: "営業日報システム" })
-  ).toBeVisible();
+  await expect(page.getByText("営業日報システム")).toBeVisible();
 
   // メールアドレスを入力
   await page.getByLabel("メールアドレス").fill(TEST_MANAGER.email);

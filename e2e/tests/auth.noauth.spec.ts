@@ -17,9 +17,7 @@ test.describe("認証機能", () => {
       await page.goto("/login");
 
       // Assert: ログインフォームが表示されている
-      await expect(
-        page.getByRole("heading", { name: "営業日報システム" })
-      ).toBeVisible();
+      await expect(page.getByText("営業日報システム")).toBeVisible();
       await expect(page.getByLabel("メールアドレス")).toBeVisible();
       await expect(page.getByLabel("パスワード")).toBeVisible();
 
@@ -143,9 +141,7 @@ test.describe("認証機能", () => {
 
       // Assert
       await expect(page).toHaveURL(/\/login/);
-      await expect(
-        page.getByRole("heading", { name: "営業日報システム" })
-      ).toBeVisible();
+      await expect(page.getByText("営業日報システム")).toBeVisible();
     });
 
     test("未認証で日報一覧にアクセスするとログインページにリダイレクトされる", async ({

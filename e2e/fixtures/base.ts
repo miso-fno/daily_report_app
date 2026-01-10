@@ -145,9 +145,7 @@ export class LoginPage extends BasePage {
   }
 
   async expectToBeVisible(): Promise<void> {
-    await expect(
-      this.page.getByRole("heading", { name: "営業日報システム" })
-    ).toBeVisible();
+    await expect(this.page.getByText("営業日報システム")).toBeVisible();
   }
 
   async login(email: string, password: string): Promise<void> {

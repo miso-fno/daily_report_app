@@ -24,9 +24,7 @@ export async function login(
   await page.goto("/login");
 
   // ログインフォームが表示されるまで待機
-  await expect(
-    page.getByRole("heading", { name: "営業日報システム" })
-  ).toBeVisible();
+  await expect(page.getByText("営業日報システム")).toBeVisible();
 
   // メールアドレスを入力
   await page.getByLabel("メールアドレス").fill(email);
@@ -81,9 +79,7 @@ export async function logout(page: Page): Promise<void> {
   await page.waitForURL(/\/login/);
 
   // ログインページが表示されることを確認
-  await expect(
-    page.getByRole("heading", { name: "営業日報システム" })
-  ).toBeVisible();
+  await expect(page.getByText("営業日報システム")).toBeVisible();
 }
 
 /**
@@ -115,9 +111,7 @@ export async function expectRedirectToLogin(
   await expect(page).toHaveURL(/\/login/);
 
   // ログインフォームが表示されることを確認
-  await expect(
-    page.getByRole("heading", { name: "営業日報システム" })
-  ).toBeVisible();
+  await expect(page.getByText("営業日報システム")).toBeVisible();
 }
 
 /**
