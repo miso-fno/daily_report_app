@@ -1,0 +1,29 @@
+import { test, expect } from "@playwright/test";
+
+import { TEST_MANAGER } from "../utils/test-data";
+
+/**
+ * UAT-002: 上長の日報確認業務フロー（スモークテスト）
+ *
+ * E2Eテストセットアップのための基本的なテスト
+ */
+test.describe("UAT-002: 上長の業務フロー", () => {
+  test("上長がログインして日報一覧にアクセスできる", async ({ page }) => {
+    // Step 1: ログイン
+    await page.goto("/login");
+    await expect(page.getByText("営業日報システム")).toBeVisible();
+    await page.getByLabel("メールアドレス").fill(TEST_MANAGER.email);
+    await page.getByLabel("パスワード").fill(TEST_MANAGER.password);
+    await page.getByRole("button", { name: "ログイン" }).click();
+
+    // ダッシュボードにリダイレクトされる（ログインページから離れたことを確認）
+    await page.waitForURL(/\/(dashboard)?$/, { timeout: 30000 });
+    await expect(page).not.toHaveURL(/\/login/);
+
+    // Step 3: 日報一覧画面に移動
+    await page.goto("/reports", { waitUntil: "networkidle" });
+
+    // 日報一覧ページが表示されることを確認
+    await expect(page).toHaveURL(/\/reports/);
+  });
+});
