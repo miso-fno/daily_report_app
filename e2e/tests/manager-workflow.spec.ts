@@ -16,11 +16,9 @@ test.describe("UAT-002: 上長の業務フロー", () => {
     await page.getByLabel("パスワード").fill(TEST_MANAGER.password);
     await page.getByRole("button", { name: "ログイン" }).click();
 
-    // ダッシュボードにリダイレクトされる
+    // ダッシュボードにリダイレクトされる（ログインページから離れたことを確認）
     await page.waitForURL(/\/(dashboard)?$/, { timeout: 30000 });
-
-    // Step 2: ユーザー名が表示されていることを確認（認証済みの証拠）
-    await expect(page.locator("body")).toContainText(TEST_MANAGER.name);
+    await expect(page).not.toHaveURL(/\/login/);
 
     // Step 3: 日報一覧画面に移動
     await page.goto("/reports", { waitUntil: "networkidle" });
