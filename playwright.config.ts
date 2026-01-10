@@ -39,9 +39,9 @@ export default defineConfig({
     // 最初のリトライ時に動画を記録
     video: "on-first-retry",
 
-    // タイムアウト設定
-    actionTimeout: 15000,
-    navigationTimeout: 30000,
+    // タイムアウト設定（CI環境では余裕を持たせる）
+    actionTimeout: 30000,
+    navigationTimeout: 60000,
 
     // ロケール設定
     locale: "ja-JP",
@@ -53,7 +53,7 @@ export default defineConfig({
 
   // expect のタイムアウト
   expect: {
-    timeout: 10000,
+    timeout: 15000,
   },
 
   // ブラウザ別プロジェクト設定
@@ -64,7 +64,7 @@ export default defineConfig({
       testMatch: /.*\.setup\.ts/,
     },
 
-    // Chrome
+    // Chrome（認証済みテスト - 認証状態を使用）
     {
       name: "chromium",
       use: {
@@ -72,9 +72,11 @@ export default defineConfig({
         storageState: "e2e/.auth/user.json",
       },
       dependencies: ["setup"],
+      // 認証なしテストとシナリオテスト（ログイン〜ログアウトを含む完全フロー）は除外
+      testIgnore: [/.*\.noauth\.spec\.ts/, /.*-workflow\.spec\.ts/],
     },
 
-    // Firefox
+    // Firefox（認証済みテスト - 認証状態を使用）
     {
       name: "firefox",
       use: {
@@ -82,9 +84,10 @@ export default defineConfig({
         storageState: "e2e/.auth/user.json",
       },
       dependencies: ["setup"],
+      testIgnore: [/.*\.noauth\.spec\.ts/, /.*-workflow\.spec\.ts/],
     },
 
-    // Safari
+    // Safari（認証済みテスト - 認証状態を使用）
     {
       name: "webkit",
       use: {
@@ -92,21 +95,24 @@ export default defineConfig({
         storageState: "e2e/.auth/user.json",
       },
       dependencies: ["setup"],
+      testIgnore: [/.*\.noauth\.spec\.ts/, /.*-workflow\.spec\.ts/],
     },
 
-    // 認証なしのテスト用プロジェクト
+    // 認証なしのテスト用プロジェクト（Chromiumのみ）
+    // auth.noauth.spec.ts と シナリオテスト（完全な業務フロー）を実行
     {
       name: "chromium-no-auth",
       use: {
         ...devices["Desktop Chrome"],
       },
-      testMatch: /.*\.noauth\.spec\.ts/,
+      testMatch: [/.*\.noauth\.spec\.ts/, /.*-workflow\.spec\.ts/],
     },
   ],
 
-  // 開発サーバーの設定
+  // Webサーバーの設定
   webServer: {
-    command: "npm run dev",
+    // CI環境ではビルド済みアプリを使用、ローカルでは開発サーバー
+    command: process.env.CI ? "npm run start" : "npm run dev",
     url: "http://localhost:3000",
     reuseExistingServer: !process.env.CI,
     timeout: 120000,
