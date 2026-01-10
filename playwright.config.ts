@@ -15,10 +15,10 @@ export default defineConfig({
   fullyParallel: true,
 
   // CI環境でのリトライ回数（ローカルではリトライしない）
-  retries: process.env.CI ? 2 : 0,
+  retries: process.env.CI ? 1 : 0,
 
-  // 並列ワーカー数（CI環境では制限）
-  workers: process.env.CI ? 1 : 4,
+  // 並列ワーカー数（CI環境でも複数ワーカーで高速化）
+  workers: process.env.CI ? 2 : 4,
 
   // レポーター設定
   reporter: process.env.CI

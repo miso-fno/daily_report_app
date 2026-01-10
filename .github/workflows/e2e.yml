@@ -90,7 +90,7 @@ jobs:
     name: E2E Quick Tests (Chromium only)
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
-    timeout-minutes: 15
+    timeout-minutes: 25
 
     services:
       postgres:
