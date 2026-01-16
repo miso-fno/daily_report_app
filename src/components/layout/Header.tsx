@@ -10,7 +10,7 @@ import {
   Menu,
 } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -50,10 +50,11 @@ interface HeaderProps {
 export function Header({ onMenuClick }: HeaderProps) {
   const { user, logout } = useAuth();
   const pathname = usePathname();
+  const router = useRouter();
 
   const handleLogout = async () => {
     await logout();
-    // TODO: ログイン画面へリダイレクト
+    router.push("/login");
   };
 
   const getInitials = (name: string) => {
