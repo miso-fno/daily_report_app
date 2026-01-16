@@ -207,7 +207,7 @@ describe("LoginForm", () => {
         expect(mockLogin).toHaveBeenCalledWith(
           "test@example.com",
           "password123",
-          "/"
+          "/dashboard"
         );
       });
     });
@@ -230,7 +230,7 @@ describe("LoginForm", () => {
 
       // Assert
       await waitFor(() => {
-        expect(mockPush).toHaveBeenCalledWith("/");
+        expect(mockPush).toHaveBeenCalledWith("/dashboard");
         expect(mockRefresh).toHaveBeenCalled();
       });
     });
@@ -494,7 +494,7 @@ describe("LoginForm", () => {
         expect(mockLogin).toHaveBeenCalledWith(
           "test@example.com",
           "password123",
-          "/"
+          "/dashboard"
         );
       });
     });
