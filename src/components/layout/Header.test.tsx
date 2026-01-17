@@ -1,18 +1,11 @@
 import { describe, it, expect, vi } from "vitest";
 
-import {
-  render,
-  screen,
-  mockMemberUser,
-  mockManagerUser,
-  mockAdminUser,
-} from "@/test/test-utils";
+import { render, screen, mockMemberUser } from "@/test/test-utils";
 
 import { Header } from "./Header";
 
 // next/navigation のモック
 vi.mock("next/navigation", () => ({
-  usePathname: () => "/dashboard",
   useRouter: () => ({
     push: vi.fn(),
     replace: vi.fn(),
@@ -31,12 +24,13 @@ describe("Header", () => {
       expect(screen.getByText("営業日報システム")).toBeInTheDocument();
     });
 
-    it("should render mobile menu button", () => {
+    it("should render hamburger menu button on all devices", () => {
       render(<Header />, { user: mockMemberUser });
 
-      expect(
-        screen.getByRole("button", { name: "メニューを開く" })
-      ).toBeInTheDocument();
+      const menuButton = screen.getByRole("button", { name: "メニューを開く" });
+      expect(menuButton).toBeInTheDocument();
+      // md:hidden クラスが削除されていることを確認（全デバイスで表示）
+      expect(menuButton).not.toHaveClass("md:hidden");
     });
 
     it("should render user avatar button", () => {
@@ -45,36 +39,6 @@ describe("Header", () => {
       expect(
         screen.getByRole("button", { name: "ユーザーメニュー" })
       ).toBeInTheDocument();
-    });
-  });
-
-  describe("navigation items for member", () => {
-    it("should show reports and customers menu but not sales-persons", () => {
-      render(<Header />, { user: mockMemberUser });
-
-      expect(screen.getByText("日報一覧")).toBeInTheDocument();
-      expect(screen.getByText("顧客マスタ")).toBeInTheDocument();
-      expect(screen.queryByText("営業マスタ")).not.toBeInTheDocument();
-    });
-  });
-
-  describe("navigation items for manager", () => {
-    it("should show reports and customers menu but not sales-persons", () => {
-      render(<Header />, { user: mockManagerUser });
-
-      expect(screen.getByText("日報一覧")).toBeInTheDocument();
-      expect(screen.getByText("顧客マスタ")).toBeInTheDocument();
-      expect(screen.queryByText("営業マスタ")).not.toBeInTheDocument();
-    });
-  });
-
-  describe("navigation items for admin", () => {
-    it("should show all menu items including sales-persons", () => {
-      render(<Header />, { user: mockAdminUser });
-
-      expect(screen.getByText("日報一覧")).toBeInTheDocument();
-      expect(screen.getByText("顧客マスタ")).toBeInTheDocument();
-      expect(screen.getByText("営業マスタ")).toBeInTheDocument();
     });
   });
 
@@ -107,7 +71,7 @@ describe("Header", () => {
   });
 
   describe("menu click callback", () => {
-    it("should call onMenuClick when mobile menu button is clicked", async () => {
+    it("should call onMenuClick when hamburger menu button is clicked", async () => {
       const onMenuClick = vi.fn();
       const { user } = render(<Header onMenuClick={onMenuClick} />, {
         user: mockMemberUser,
