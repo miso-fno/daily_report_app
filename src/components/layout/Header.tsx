@@ -2,7 +2,6 @@
 
 import { FileText, User, KeyRound, LogOut, Menu } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -14,18 +13,17 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/contexts/AuthContext";
+import { logout } from "@/lib/auth-actions";
 
 interface HeaderProps {
   onMenuClick?: () => void;
 }
 
 export function Header({ onMenuClick }: HeaderProps) {
-  const { user, logout } = useAuth();
-  const router = useRouter();
+  const { user } = useAuth();
 
   const handleLogout = async () => {
     await logout();
-    router.push("/login");
   };
 
   const getInitials = (name: string) => {
