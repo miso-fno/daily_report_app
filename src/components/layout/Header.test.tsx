@@ -24,6 +24,13 @@ describe("Header", () => {
       expect(screen.getByText("営業日報システム")).toBeInTheDocument();
     });
 
+    it("should have logo link to dashboard (UT-NAV-009)", () => {
+      render(<Header />, { user: mockMemberUser });
+
+      const logoLink = screen.getByText("営業日報システム").closest("a");
+      expect(logoLink).toHaveAttribute("href", "/dashboard");
+    });
+
     it("should render hamburger menu button on all devices", () => {
       render(<Header />, { user: mockMemberUser });
 
