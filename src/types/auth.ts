@@ -16,6 +16,7 @@ export function canAccessMenu(menuId: string, role: UserRole): boolean {
   const menuPermissions: Record<string, UserRole[]> = {
     dashboard: ["member", "manager", "admin"],
     reports: ["member", "manager", "admin"],
+    "reports-new": ["member", "manager", "admin"],
     customers: ["member", "manager", "admin"],
     "sales-persons": ["admin"],
   };
