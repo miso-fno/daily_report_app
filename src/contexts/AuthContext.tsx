@@ -6,6 +6,7 @@ import {
   useState,
   useCallback,
   useMemo,
+  useEffect,
 } from "react";
 
 import type { User, UserRole } from "@/types/auth";
@@ -40,6 +41,11 @@ export function AuthProvider({
 }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(initialUser);
   const [isLoading, setIsLoading] = useState(false);
+
+  // initialUserが変更されたらuserを更新する（セッション取得後の反映用）
+  useEffect(() => {
+    setUser(initialUser);
+  }, [initialUser]);
 
   const login = useCallback(async (email: string, _password: string) => {
     setIsLoading(true);
