@@ -36,7 +36,18 @@ describe("Sidebar", () => {
 
       expect(screen.getByText("ダッシュボード")).toBeInTheDocument();
       expect(screen.getByText("日報一覧")).toBeInTheDocument();
+      expect(screen.getByText("日報作成")).toBeInTheDocument();
       expect(screen.getByText("顧客マスタ")).toBeInTheDocument();
+    });
+
+    it("should have correct link for reports-new menu (UT-NAV-004)", () => {
+      const onOpenChange = vi.fn();
+      render(<Sidebar open={true} onOpenChange={onOpenChange} />, {
+        user: mockMemberUser,
+      });
+
+      const reportsNewLink = screen.getByText("日報作成").closest("a");
+      expect(reportsNewLink).toHaveAttribute("href", "/reports/new");
     });
 
     it("should not show sales-persons menu for member", () => {
@@ -68,6 +79,7 @@ describe("Sidebar", () => {
 
       expect(screen.getByText("ダッシュボード")).toBeInTheDocument();
       expect(screen.getByText("日報一覧")).toBeInTheDocument();
+      expect(screen.getByText("日報作成")).toBeInTheDocument();
       expect(screen.getByText("顧客マスタ")).toBeInTheDocument();
       expect(screen.getByText("営業マスタ")).toBeInTheDocument();
     });
