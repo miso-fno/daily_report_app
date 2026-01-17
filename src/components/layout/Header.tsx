@@ -1,16 +1,8 @@
 "use client";
 
-import {
-  FileText,
-  Users,
-  Building2,
-  User,
-  KeyRound,
-  LogOut,
-  Menu,
-} from "lucide-react";
+import { FileText, User, KeyRound, LogOut, Menu } from "lucide-react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -22,26 +14,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/contexts/AuthContext";
-import { cn } from "@/lib/utils";
-import { canAccessMenu } from "@/types/auth";
-
-interface NavItem {
-  id: string;
-  label: string;
-  href: string;
-  icon: React.ComponentType<{ className?: string }>;
-}
-
-const navItems: NavItem[] = [
-  { id: "reports", label: "日報一覧", href: "/reports", icon: FileText },
-  { id: "customers", label: "顧客マスタ", href: "/customers", icon: Building2 },
-  {
-    id: "sales-persons",
-    label: "営業マスタ",
-    href: "/sales-persons",
-    icon: Users,
-  },
-];
 
 interface HeaderProps {
   onMenuClick?: () => void;
@@ -49,7 +21,6 @@ interface HeaderProps {
 
 export function Header({ onMenuClick }: HeaderProps) {
   const { user, logout } = useAuth();
-  const pathname = usePathname();
   const router = useRouter();
 
   const handleLogout = async () => {
@@ -66,18 +37,14 @@ export function Header({ onMenuClick }: HeaderProps) {
       .toUpperCase();
   };
 
-  const visibleNavItems = navItems.filter(
-    (item) => user && canAccessMenu(item.id, user.role)
-  );
-
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 items-center">
-        {/* モバイルメニューボタン */}
+        {/* ハンバーガーメニューボタン */}
         <Button
           variant="ghost"
           size="icon"
-          className="mr-2 md:hidden"
+          className="mr-2"
           onClick={onMenuClick}
           aria-label="メニューを開く"
         >
@@ -87,34 +54,11 @@ export function Header({ onMenuClick }: HeaderProps) {
         {/* ロゴ */}
         <Link
           href="/dashboard"
-          className="mr-6 flex items-center space-x-2 font-bold"
+          className="flex items-center space-x-2 font-bold"
         >
           <FileText className="h-5 w-5" />
           <span className="hidden sm:inline-block">営業日報システム</span>
         </Link>
-
-        {/* デスクトップナビゲーション */}
-        <nav className="hidden md:flex md:flex-1 md:items-center md:space-x-1">
-          {visibleNavItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = pathname.startsWith(item.href);
-            return (
-              <Link
-                key={item.id}
-                href={item.href}
-                className={cn(
-                  "flex items-center space-x-2 rounded-md px-3 py-2 text-sm font-medium transition-colors",
-                  isActive
-                    ? "bg-accent text-accent-foreground"
-                    : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-                )}
-              >
-                <Icon className="h-4 w-4" />
-                <span>{item.label}</span>
-              </Link>
-            );
-          })}
-        </nav>
 
         {/* ユーザーメニュー */}
         <div className="ml-auto flex items-center">
