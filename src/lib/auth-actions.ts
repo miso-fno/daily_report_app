@@ -13,7 +13,7 @@ export async function login(
     await signIn("credentials", {
       email,
       password,
-      redirectTo: callbackUrl || "/",
+      redirectTo: callbackUrl || "/dashboard",
     });
   } catch (error) {
     if (error instanceof AuthError) {

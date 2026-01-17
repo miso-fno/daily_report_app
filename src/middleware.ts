@@ -84,9 +84,18 @@ export default auth((req) => {
   if (isPublicRoute) {
     // Redirect authenticated users away from login page
     if (pathname === "/login" && session) {
-      return addSecurityHeaders(NextResponse.redirect(new URL("/", req.url)));
+      return addSecurityHeaders(
+        NextResponse.redirect(new URL("/dashboard", req.url))
+      );
     }
     return addSecurityHeaders(NextResponse.next());
+  }
+
+  // Redirect root path to dashboard
+  if (pathname === "/" && session) {
+    return addSecurityHeaders(
+      NextResponse.redirect(new URL("/dashboard", req.url))
+    );
   }
 
   // Protect all other routes
