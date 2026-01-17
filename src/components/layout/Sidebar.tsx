@@ -1,6 +1,6 @@
 "use client";
 
-import { FileText, Users, Building2, Home } from "lucide-react";
+import { FileText, Users, Building2, Home, PlusCircle } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -24,6 +24,12 @@ interface NavItem {
 const navItems: NavItem[] = [
   { id: "dashboard", label: "ダッシュボード", href: "/dashboard", icon: Home },
   { id: "reports", label: "日報一覧", href: "/reports", icon: FileText },
+  {
+    id: "reports-new",
+    label: "日報作成",
+    href: "/reports/new",
+    icon: PlusCircle,
+  },
   { id: "customers", label: "顧客マスタ", href: "/customers", icon: Building2 },
   {
     id: "sales-persons",
