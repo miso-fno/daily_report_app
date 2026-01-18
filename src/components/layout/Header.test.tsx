@@ -4,7 +4,7 @@ import { render, screen, mockMemberUser } from "@/test/test-utils";
 
 import { Header } from "./Header";
 
-// next/navigation のモック
+// next/navigation のモック（Linkコンポーネント用に残す）
 vi.mock("next/navigation", () => ({
   useRouter: () => ({
     push: vi.fn(),
@@ -14,6 +14,11 @@ vi.mock("next/navigation", () => ({
     forward: vi.fn(),
     prefetch: vi.fn(),
   }),
+}));
+
+// auth-actions のモック
+vi.mock("@/lib/auth-actions", () => ({
+  logout: vi.fn(),
 }));
 
 describe("Header", () => {
