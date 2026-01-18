@@ -20,6 +20,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/contexts/AuthContext";
 import { canPerformAction } from "@/types/auth";
 
+import type { Session } from "next-auth";
+
 interface CustomerListResponse {
   success: boolean;
   data?: {
@@ -172,9 +174,15 @@ function CustomersPageContent() {
   );
 }
 
-export default function CustomersPageClient() {
+interface CustomersPageClientProps {
+  session: Session | null;
+}
+
+export default function CustomersPageClient({
+  session,
+}: CustomersPageClientProps) {
   return (
-    <AuthenticatedLayout>
+    <AuthenticatedLayout session={session}>
       <CustomersPageContent />
     </AuthenticatedLayout>
   );
