@@ -21,8 +21,9 @@ function getRateLimitConfig(pathname: string): {
   name: string;
   config: { limit: number; windowMs: number };
 } | null {
-  // ログインエンドポイント
-  if (pathname === "/api/auth/callback/credentials" || pathname === "/login") {
+  // ログイン認証エンドポイント（POSTリクエストのみ）
+  // 注意: /loginページへのGETリクエストにはレート制限を適用しない
+  if (pathname === "/api/auth/callback/credentials") {
     return { name: "login", config: RateLimitPresets.login };
   }
 
