@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 
+import { auth } from "@/auth";
 import { AuthenticatedLayout } from "@/components/layout/AuthenticatedLayout";
 import {
   ReportsList,
@@ -14,9 +15,11 @@ export const metadata = {
 // 動的レンダリングを強制（認証が必要なページ）
 export const dynamic = "force-dynamic";
 
-export default function ReportsPage() {
+export default async function ReportsPage() {
+  const session = await auth();
+
   return (
-    <AuthenticatedLayout>
+    <AuthenticatedLayout session={session}>
       <div className="space-y-6">
         <h1 className="text-2xl font-bold">日報一覧</h1>
         <Suspense fallback={<ReportsListSkeleton />}>

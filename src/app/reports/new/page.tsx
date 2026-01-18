@@ -1,6 +1,7 @@
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 
+import { auth } from "@/auth";
 import { AuthenticatedLayout } from "@/components/layout/AuthenticatedLayout";
 import { Button } from "@/components/ui/button";
 import { ReportFormWrapper } from "@/features/reports/components";
@@ -13,9 +14,11 @@ export const metadata = {
 // 動的レンダリングを強制（認証が必要なページ）
 export const dynamic = "force-dynamic";
 
-export default function NewReportPage() {
+export default async function NewReportPage() {
+  const session = await auth();
+
   return (
-    <AuthenticatedLayout>
+    <AuthenticatedLayout session={session}>
       <div className="space-y-6">
         <div className="flex items-center gap-4">
           <Button variant="ghost" size="sm" asChild>

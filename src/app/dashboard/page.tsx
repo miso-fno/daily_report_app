@@ -1,3 +1,4 @@
+import { auth } from "@/auth";
 import { AuthenticatedLayout } from "@/components/layout/AuthenticatedLayout";
 import { Dashboard } from "@/features/dashboard/components";
 
@@ -9,9 +10,11 @@ export const metadata = {
 // 動的レンダリングを強制（認証が必要なページ）
 export const dynamic = "force-dynamic";
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const session = await auth();
+
   return (
-    <AuthenticatedLayout>
+    <AuthenticatedLayout session={session}>
       <Dashboard />
     </AuthenticatedLayout>
   );

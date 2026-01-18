@@ -188,7 +188,7 @@ export default async function ReportDetailPage({
   }
 
   return (
-    <AuthenticatedLayout>
+    <AuthenticatedLayout session={session}>
       <div className="space-y-6">
         <div className="flex items-center gap-4">
           <Button variant="ghost" size="sm" asChild>

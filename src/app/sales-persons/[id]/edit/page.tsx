@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 
+import { auth } from "@/auth";
 import { AuthenticatedLayout } from "@/components/layout/AuthenticatedLayout";
 import { SalesPersonEditContainer } from "@/features/sales-persons/components/SalesPersonEditContainer";
 
@@ -20,6 +21,7 @@ interface EditSalesPersonPageProps {
 export default async function EditSalesPersonPage({
   params,
 }: EditSalesPersonPageProps) {
+  const session = await auth();
   const { id } = await params;
   const salesPersonId = parseInt(id, 10);
 
@@ -28,7 +30,7 @@ export default async function EditSalesPersonPage({
   }
 
   return (
-    <AuthenticatedLayout>
+    <AuthenticatedLayout session={session}>
       <div className="mx-auto max-w-2xl space-y-6">
         <h1 className="text-2xl font-bold">営業担当者マスタ 編集</h1>
         <SalesPersonEditContainer salesPersonId={salesPersonId} />

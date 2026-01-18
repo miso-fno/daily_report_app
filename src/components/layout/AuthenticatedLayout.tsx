@@ -1,7 +1,6 @@
 "use client";
 
-import { useSession } from "next-auth/react";
-import { useMemo, useState } from "react";
+import { useState, useMemo } from "react";
 
 import { Skeleton } from "@/components/ui/skeleton";
 import { AuthProvider } from "@/contexts/AuthContext";
@@ -10,9 +9,11 @@ import { Header } from "./Header";
 import { Sidebar } from "./Sidebar";
 
 import type { User, UserRole } from "@/types/auth";
+import type { Session } from "next-auth";
 
 interface AuthenticatedLayoutProps {
   children: React.ReactNode;
+  session: Session | null;
 }
 
 /**
@@ -47,9 +48,11 @@ function LayoutSkeleton() {
   );
 }
 
-export function AuthenticatedLayout({ children }: AuthenticatedLayoutProps) {
+export function AuthenticatedLayout({
+  children,
+  session,
+}: AuthenticatedLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { data: session, status } = useSession();
 
   // セッションからAuthContext用のユーザー情報を構築
   const user: User | null = useMemo(() => {
@@ -77,8 +80,8 @@ export function AuthenticatedLayout({ children }: AuthenticatedLayoutProps) {
     };
   }, [session]);
 
-  // セッション読み込み中はスケルトンを表示
-  if (status === "loading") {
+  // セッションがない場合はスケルトンを表示
+  if (!session?.user) {
     return <LayoutSkeleton />;
   }
 

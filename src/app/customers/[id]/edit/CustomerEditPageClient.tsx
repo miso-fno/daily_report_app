@@ -16,6 +16,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/contexts/AuthContext";
 import { canPerformAction } from "@/types/auth";
 
+import type { Session } from "next-auth";
+
 interface CustomerDetailResponse {
   success: boolean;
   data?: {
@@ -252,9 +254,15 @@ function CustomerEditPageContent() {
   );
 }
 
-export default function CustomerEditPageClient() {
+interface CustomerEditPageClientProps {
+  session: Session | null;
+}
+
+export default function CustomerEditPageClient({
+  session,
+}: CustomerEditPageClientProps) {
   return (
-    <AuthenticatedLayout>
+    <AuthenticatedLayout session={session}>
       <CustomerEditPageContent />
     </AuthenticatedLayout>
   );

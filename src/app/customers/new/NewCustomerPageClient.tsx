@@ -10,6 +10,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/contexts/AuthContext";
 import { canPerformAction } from "@/types/auth";
 
+import type { Session } from "next-auth";
+
 interface ApiResponse {
   success: boolean;
   data?: unknown;
@@ -112,9 +114,15 @@ function NewCustomerPageContent() {
   );
 }
 
-export default function NewCustomerPageClient() {
+interface NewCustomerPageClientProps {
+  session: Session | null;
+}
+
+export default function NewCustomerPageClient({
+  session,
+}: NewCustomerPageClientProps) {
   return (
-    <AuthenticatedLayout>
+    <AuthenticatedLayout session={session}>
       <NewCustomerPageContent />
     </AuthenticatedLayout>
   );

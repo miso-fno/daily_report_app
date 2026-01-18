@@ -149,7 +149,7 @@ export default async function EditReportPage({ params }: EditReportPageProps) {
   // 確認済の日報は編集不可
   if (report.status === "confirmed") {
     return (
-      <AuthenticatedLayout>
+      <AuthenticatedLayout session={session}>
         <div className="space-y-6">
           <div className="flex items-center gap-4">
             <Button variant="ghost" size="sm" asChild>
@@ -169,7 +169,7 @@ export default async function EditReportPage({ params }: EditReportPageProps) {
   }
 
   return (
-    <AuthenticatedLayout>
+    <AuthenticatedLayout session={session}>
       <div className="space-y-6">
         <div className="flex items-center gap-4">
           <Button variant="ghost" size="sm" asChild>
