@@ -16,9 +16,9 @@ vi.mock("next/navigation", () => ({
   }),
 }));
 
-// auth-actions のモック
-vi.mock("@/lib/auth-actions", () => ({
-  logout: vi.fn(),
+// next-auth/react のモック
+vi.mock("next-auth/react", () => ({
+  signOut: vi.fn(),
 }));
 
 describe("Header", () => {

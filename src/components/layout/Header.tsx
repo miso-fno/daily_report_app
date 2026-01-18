@@ -2,6 +2,7 @@
 
 import { FileText, User, KeyRound, LogOut, Menu } from "lucide-react";
 import Link from "next/link";
+import { signOut } from "next-auth/react";
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -13,7 +14,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/contexts/AuthContext";
-import { logout } from "@/lib/auth-actions";
 
 interface HeaderProps {
   onMenuClick?: () => void;
@@ -23,7 +23,7 @@ export function Header({ onMenuClick }: HeaderProps) {
   const { user } = useAuth();
 
   const handleLogout = async () => {
-    await logout();
+    await signOut({ callbackUrl: "/login" });
   };
 
   const getInitials = (name: string) => {
